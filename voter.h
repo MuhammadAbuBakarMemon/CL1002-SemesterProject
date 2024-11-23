@@ -10,18 +10,23 @@ struct date
 
 struct address
 {
-    char city[20];
-    char country[20];
+    char city[25];
+    char country[25];
 };
 
 struct voter
 {
     long int CNIC;
-    char name[25];
-    char Fname[25];
+    char name[31];
+    char Fname[31];
     int age;
     struct date DoB;
     struct address address;
     int pollingStationID;
+    int PIN;
 };
+
+void register_voter(struct voter **voters, int *count, int *capacity);
+int validate_CNIC(const char *cinc);
+
 #endif
