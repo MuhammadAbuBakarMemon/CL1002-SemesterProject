@@ -38,6 +38,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     if (validate_CNIC(new_voter->CNIC))
     {
         printf("Invalid CNIC!");
+        goto end;
     }
     
     printf("Enter Age: ");
