@@ -1,0 +1,30 @@
+# Ignore object files
+*.o
+
+# Ignore executable files
+*.out
+*.exe
+
+# Ignore core dump files
+core*
+
+# Ignore temporary files from editors
+*~
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore build directories
+/build/
+/bin/
+/obj/
+
+# Ignore backup files
+*.bak
+*.swp
+
+# Ignore logs
+*.log
+
+# Ignore environment variable files
+.env
