@@ -5,9 +5,18 @@
 #include <time.h>
 #include "voter.h"
 #include "validate.h"
+#include "deadline.h"
+
 
 void register_voter(struct voter **voters, int *count, int *capacity)
 {
+    struct date deadline = {27, 11, 2024};
+    if (!Deadline(deadline))
+    {
+        printf("Registration is closed. Deadline has passed.");
+        return;
+    }
+
     if (*count >= *capacity)
     {
         *capacity *= 2;
@@ -38,15 +47,15 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     if (validate_CNIC(new_voter->CNIC))
     {
         printf("Invalid CNIC!");
-        goto end;
+        return;
     }
-    
+
     printf("Enter Age: ");
     scanf("%d", &new_voter->age);
     if (!(validate_age(new_voter->age)))
     {
         printf("Age must be in limit i.e \"18 to 100\".");
-        goto end;
+        return;
     }
 
     printf("Enter Date of Birth (day month year): ");
@@ -55,7 +64,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     if (!(validate_date(new_voter->DoB.day, new_voter->DoB.month, new_voter->DoB.year)))
     {
         printf("Invalid date!");
-        goto end;
+        return;
     }
 
     printf("Enter City Name: ");
@@ -69,9 +78,8 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     if (!(validate_PIN(new_voter->PIN)))
     {
         printf("Invalid Pin! Must be in [11111, 99999].");
-        goto end;
+        return;
     }
 
     (*count)++;
-end:
 }
