@@ -34,8 +34,12 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     new_voter->Fname[strcspn(new_voter->Fname, "\n")] = '\0';
 
     printf("Enter CNIC (13 digits): ");
-    scanf("%ld", &new_voter->CNIC);
-
+    scanf("%13s", new_voter->CNIC);
+    if (validate_CNIC(new_voter->CNIC))
+    {
+        printf("Invalid CNIC!");
+    }
+    
     printf("Enter Age: ");
     scanf("%d", &new_voter->age);
     if (!(validate_age(new_voter->age)))
@@ -49,7 +53,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
           &new_voter->DoB.month, &new_voter->DoB.year);
     if (!(validate_date(new_voter->DoB.day, new_voter->DoB.month, new_voter->DoB.year)))
     {
-        printf("Invalid date");
+        printf("Invalid date!");
         goto end;
     }
 
