@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <unistd.h>
 #include "voter.h"
 #include "validate.h"
 #include "deadline.h"
@@ -28,7 +29,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     }
 
     struct voter *new_voter = &(*voters)[*count];
-    
+
     getchar();
 
     printf("Enter Name: ");
@@ -41,11 +42,28 @@ void register_voter(struct voter **voters, int *count, int *capacity)
 
     printf("Enter CNIC (13 digits): ");
     scanf("%13s", new_voter->CNIC);
-    if (validate_CNIC(new_voter->CNIC))
+    if (!(validate_CNIC(new_voter->CNIC)))
     {
         printf("Invalid CNIC!");
         return;
     }
+
+    FILE *fp = fopen("voters.csv", "r");
+    if (fp != NULL)
+    {
+        char line[300];
+        while ((fgets(line, sizeof(line), fp)))
+        {
+            char existing_CNIC[14];
+            sscanf(line, "%13[^,]", existing_CNIC);
+            if (strcmp(existing_CNIC, new_voter->CNIC) == 0)
+            {
+                printf("CNIC is already registered.");
+                fclose(fp);
+            }
+        }
+    }
+    fclose(fp);
 
     printf("Enter Age: ");
     scanf("%d", &new_voter->age);
@@ -80,7 +98,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
 
     (*count)++;
 
-    FILE *fp = fopen("voters.csv", "a+");
+    fp = fopen("voters.csv", "a+");
     fseek(fp, 0, SEEK_END);
     if (ftell(fp) == 0)
     {
@@ -100,6 +118,8 @@ void register_voter(struct voter **voters, int *count, int *capacity)
             new_voter->address.city,
             new_voter->address.country,
             new_voter->PIN);
-
     fclose(fp);
+    sleep(1);
+    printf("\n\nRegistration Successful!\n\n");
+    sleep(2);
 }

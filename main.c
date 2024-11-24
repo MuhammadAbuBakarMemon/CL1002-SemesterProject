@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "voter.h"
+#include "login.h"
 #include <time.h>
 
 int main()
@@ -19,6 +21,7 @@ int main()
     int choice;
     while (1)
     {
+        system("cls");
         printf("\n--- Voting System ---\n");
         printf("1. Register as a New Voter\n");
         printf("2. Log In\n");
@@ -29,17 +32,26 @@ int main()
         switch (choice)
         {
         case 1:
+            system("cls");
+            printf("------Registration------\n");
             register_voter(&voters, &count, &capacity);
             break;
         case 2:
-            printf("Login feature is under development.\n");
+            system("cls");
+            printf("------Log-In------\n");
+            // printf("Login feature is under development.\n");
+            logIn();
             break;
         case 3:
+            system("cls");
+            sleep(2);
             printf("Exiting the system. Goodbye!\n");
             free(voters);
             return 0;
         default:
+            system("cls");
             printf("Invalid choice. Please try again.\n");
         }
     }
+    return 0;
 }
