@@ -7,7 +7,6 @@
 #include "validate.h"
 #include "deadline.h"
 
-
 void register_voter(struct voter **voters, int *count, int *capacity)
 {
     struct date deadline = {27, 11, 2024};
@@ -29,9 +28,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     }
 
     struct voter *new_voter = &(*voters)[*count];
-
-    printf("Enter details for voter %d:\n", *count + 1);
-
+    
     getchar();
 
     printf("Enter Name: ");
@@ -82,4 +79,27 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     }
 
     (*count)++;
+
+    FILE *fp = fopen("voters.csv", "a+");
+    fseek(fp, 0, SEEK_END);
+    if (ftell(fp) == 0)
+    {
+        fprintf(fp, "CNIC,Name,Father's Name,Age,Date of Birth,City,Country,PIN\n");
+    }
+    if (fp == NULL)
+    {
+        printf("There is error opening the file!");
+        return;
+    }
+    fprintf(fp, "%s,%s,%s,%d,%02d/%02d/%04d,%s,%s,%d\n",
+            new_voter->CNIC,
+            new_voter->name,
+            new_voter->Fname,
+            new_voter->age,
+            new_voter->DoB.day, new_voter->DoB.month, new_voter->DoB.year,
+            new_voter->address.city,
+            new_voter->address.country,
+            new_voter->PIN);
+
+    fclose(fp);
 }
