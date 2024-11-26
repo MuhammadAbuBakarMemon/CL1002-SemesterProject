@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "voter.h"
 #include "login.h"
+#include "register_voter.h"
 #include <time.h>
 
 int main()
