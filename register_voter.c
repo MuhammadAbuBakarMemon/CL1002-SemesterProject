@@ -89,7 +89,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     scanf("%24s", new_voter->address.country);
 
     printf("Enter PIN(5-digits): ");
-    scanf("%d", &new_voter->PIN);
+    scanf("%5s", new_voter->PIN);
     if (!(validate_PIN(new_voter->PIN)))
     {
         printf("Invalid Pin! Must be in [11111, 99999].");
@@ -109,7 +109,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
         printf("There is error opening the file!");
         return;
     }
-    fprintf(fp, "%s,%s,%s,%d,%02d/%02d/%04d,%s,%s,%d\n",
+    fprintf(fp, "%s,%s,%s,%d,%02d/%02d/%04d,%s,%s,%s\n",
             new_voter->CNIC,
             new_voter->name,
             new_voter->Fname,

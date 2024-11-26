@@ -22,11 +22,11 @@ struct voter
     int age;
     struct date DoB;
     struct address address;
-    int pollingStationID;
-    int PIN;
+    char PIN[6];
 };
 
 void register_voter(struct voter **voters, int *count, int *capacity);
 int validate_CNIC(const char *cinc);
+void logIn();
 
 #endif

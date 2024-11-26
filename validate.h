@@ -59,8 +59,9 @@ int validate_date(int day, int month, int year)
 
     return 1;
 }
-int validate_PIN(int PIN)
+int validate_PIN(char *pin)
 {
+    int PIN = atoi(pin);
     if (PIN <= 11111 || PIN >= (99999 + 1))
     {
         return 0;

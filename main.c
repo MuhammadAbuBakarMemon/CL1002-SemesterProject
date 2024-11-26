@@ -39,7 +39,6 @@ int main()
         case 2:
             system("cls");
             printf("------Log-In------\n");
-            // printf("Login feature is under development.\n");
             logIn();
             break;
         case 3:

@@ -2,58 +2,51 @@
 #define LOGIN_H
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
+#include "voter.h"
 
 void logIn()
 {
-    char logCNIC[14], logPIN[6];
+    char logCNIC[14];
+    char logPIN[6];
 
-    printf("Enter CNIC(13 digits): ");
-    fgets(logCNIC, sizeof(logCNIC), stdin);
-    logCNIC[strcspn(logCNIC, "\n")] = '\0';
-
+    printf("Enter CNIC: ");
+    scanf("%13s", logCNIC);
     printf("Enter PIN: ");
-    fgets(logPIN, sizeof(logPIN), stdin);
-    logPIN[strcspn(logPIN, "\n")] = '\0';
+    scanf("%5s", logPIN);
 
     FILE *fl = fopen("voters.csv", "r");
     if (fl == NULL)
     {
-        printf("Error!");
+        printf("Error opening voters.csv for reading!\n");
         return;
     }
 
-    char line[300];
+    char fileCNIC[14];
+    char filePIN[6];
     int found = 0;
 
-    while (fgets(line, sizeof(line), fl))
+    // Read each line using fscanf
+    while (fscanf(fl, "%13[^,],%5[^\n]\n", fileCNIC, filePIN) == 2)
     {
-        char fileCNIC[14];
-        char filePIN[6];
-
-        sscanf(line, "%13[^,],%5[^,\n]", fileCNIC, filePIN);
-
         if (strcmp(logCNIC, fileCNIC) == 0 && strcmp(logPIN, filePIN) == 0)
         {
             found = 1;
             break;
         }
     }
+
     fclose(fl);
 
     if (found)
     {
-        system("cls");
-        sleep(1);
-        printf("\nLog In Successful!\n");
+        printf("Login successful!\n");
     }
     else
     {
-        system("cls");
-        printf("\nInvalid CNIC or PIN!\n");
+        printf("Invalid CNIC or PIN!\n");
     }
 }
-
 #endif
