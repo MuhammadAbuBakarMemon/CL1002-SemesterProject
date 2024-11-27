@@ -1,10 +1,9 @@
-#ifndef LOGIN_H
-#define LOGIN_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <conio.h>
 #include "voter.h"
 
 void logIn()
@@ -28,7 +27,6 @@ void logIn()
     char filePIN[6];
     int found = 0;
 
-    // Read each line using fscanf
     while (fscanf(fl, "%13[^,],%5[^\n]\n", fileCNIC, filePIN) == 2)
     {
         if (strcmp(logCNIC, fileCNIC) == 0 && strcmp(logPIN, filePIN) == 0)
@@ -43,10 +41,12 @@ void logIn()
     if (found)
     {
         printf("Login successful!\n");
+        getch();
+
     }
     else
     {
         printf("Invalid CNIC or PIN!\n");
+        getch();
     }
 }
-#endif

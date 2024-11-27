@@ -3,7 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 #include "voter.h"
-#include "login.h"
 #include <time.h>
 
 int main()
