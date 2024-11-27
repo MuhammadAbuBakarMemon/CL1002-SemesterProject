@@ -9,11 +9,11 @@
 
 void logIn()
 {
-    char logCNIC[14];
+    char logCNIC[16];
     char logPIN[6];
 
     printf("Enter CNIC: ");
-    scanf("%13s", logCNIC);
+    scanf("%15s", logCNIC);
     printf("Enter PIN: ");
     scanf("%5s", logPIN);
 
@@ -24,12 +24,12 @@ void logIn()
         return;
     }
 
-    char fileCNIC[14];
+    char fileCNIC[16];
     char filePIN[6];
     int found = 0;
 
     // Read each line using fscanf
-    while (fscanf(fl, "%13[^,],%5[^\n]\n", fileCNIC, filePIN) == 2)
+    while (fscanf(fl, "%15[^,],%5[^\n]\n", fileCNIC, filePIN) == 2)
     {
         if (strcmp(logCNIC, fileCNIC) == 0 && strcmp(logPIN, filePIN) == 0)
         {

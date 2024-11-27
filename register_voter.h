@@ -40,12 +40,27 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     fgets(new_voter->Fname, sizeof(new_voter->Fname), stdin);
     new_voter->Fname[strcspn(new_voter->Fname, "\n")] = '\0';
 
-    printf("Enter CNIC (13 digits): ");
-    scanf("%13s", new_voter->CNIC);
-    if (!(validate_CNIC(new_voter->CNIC)))
-    {
-        printf("Invalid CNIC!");
+    int cnicValidated = 0;
+    int attempts=3;
+    while (attempts>0) {
+        printf("Enter your CNIC as (xxxxx-xxxxxxx-x): ");
+        fgets(new_voter->CNIC, sizeof(new_voter->CNIC), stdin);
+        new_voter->CNIC[strcspn(new_voter->CNIC, "\n")] = '\0'; 
+
+        cnicValidated = validate_CNIC(new_voter->CNIC);
+        if (!cnicValidated) {
+            printf("Invalid CNIC!\n");   
+            attempts--; 
+             if (attempts > 0) {
+             printf("You have %d attempt(s) remaining.\n", attempts);
+             } else {
+                printf("Wrong input. No attempts left.\n");
+                return;
+         }
+        } else {
+        cnicValidated = true;
         return;
+        }
     }
 
     FILE *fp = fopen("voters.csv", "r");
@@ -54,8 +69,8 @@ void register_voter(struct voter **voters, int *count, int *capacity)
         char line[300];
         while ((fgets(line, sizeof(line), fp)))
         {
-            char existing_CNIC[14];
-            sscanf(line, "%13[^,]", existing_CNIC);
+            char existing_CNIC[15];
+            sscanf(line, "%15[^,]", existing_CNIC);
             if (strcmp(existing_CNIC, new_voter->CNIC) == 0)
             {
                 printf("CNIC is already registered.");

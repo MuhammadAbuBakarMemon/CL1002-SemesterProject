@@ -6,23 +6,38 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include<stdbool.h>
 #include "voter.h"
 
 int validate_CNIC(const char *cnic)
 {
-    if (strlen(cnic) != 13)
-    {
-        return 0;
-    }
-    for (int i = 0; i < 13; i++)
-    {
-        if (!isdigit(cnic[i]))
-        {
-            return 0;
+    bool flag = false; 
+        int size = strlen(cnic);
+        if (size == 15) { 
+            flag = true; 
+            for (int i = 0; i < size; i++) {
+                if (i == 5 || i == 13) { 
+                    if (cnic[i] != '-') {
+                        flag = false;
+                        break;
+                    }
+                } else { 
+                    if (!isdigit(cnic[i])) { 
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+        } else {
+            flag = false; 
         }
+        
+        if (flag) {
+           return 1;
+           }else{
+            return 0;
+           }
     }
-    return 1;
-}
 
 int validate_age(int age)
 {
