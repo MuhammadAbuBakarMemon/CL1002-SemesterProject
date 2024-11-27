@@ -16,7 +16,7 @@ struct address
 
 struct voter
 {
-    char CNIC[14];
+    char CNIC[16];
     char name[31];
     char Fname[31];
     int age;

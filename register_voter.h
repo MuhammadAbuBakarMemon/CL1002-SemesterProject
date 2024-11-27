@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include<stdbool.h>
 #include <unistd.h>
 #include "voter.h"
 #include "validate.h"
@@ -40,26 +41,27 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     fgets(new_voter->Fname, sizeof(new_voter->Fname), stdin);
     new_voter->Fname[strcspn(new_voter->Fname, "\n")] = '\0';
 
-    int cnicValidated = 0;
-    int attempts=3;
-    while (attempts>0) {
-        printf("Enter your CNIC as (xxxxx-xxxxxxx-x): ");
+    bool cnicValidated = false;
+    int attempts = 3;
+    while (attempts > 0) {
+        printf("\nEnter your CNIC as (xxxxx-xxxxxxx-x): ");
         fgets(new_voter->CNIC, sizeof(new_voter->CNIC), stdin);
         new_voter->CNIC[strcspn(new_voter->CNIC, "\n")] = '\0'; 
 
         cnicValidated = validate_CNIC(new_voter->CNIC);
-        if (!cnicValidated) {
+        if (cnicValidated == false) {
             printf("Invalid CNIC!\n");   
-            attempts--; 
-             if (attempts > 0) {
-             printf("You have %d attempt(s) remaining.\n", attempts);
-             } else {
+            attempts--;
+             
+            if (attempts > 0) {
+                printf("You have %d attempt(s) remaining.\n", attempts);
+            } else {
                 printf("Wrong input. No attempts left.\n");
                 return;
-         }
+            }
         } else {
-        cnicValidated = true;
-        return;
+            cnicValidated = true;
+            break;
         }
     }
 

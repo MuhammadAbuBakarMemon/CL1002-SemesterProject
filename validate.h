@@ -11,33 +11,28 @@
 
 int validate_CNIC(const char *cnic)
 {
-    bool flag = false; 
-        int size = strlen(cnic);
-        if (size == 15) { 
-            flag = true; 
-            for (int i = 0; i < size; i++) {
-                if (i == 5 || i == 13) { 
-                    if (cnic[i] != '-') {
-                        flag = false;
-                        break;
-                    }
-                } else { 
-                    if (!isdigit(cnic[i])) { 
-                        flag = false;
-                        break;
-                    }
+    bool flag = true; 
+    int size = strlen(cnic);
+    if (size == 15) {
+        for (int i = 0; i < size; i++) {
+            if (i == 5 || i == 13) {
+                if (cnic[i] != '-') {
+                    flag = false;
+                    break;
+                }
+            } else { 
+                if (!isdigit(cnic[i])) { 
+                    flag = false;
+                    break;
                 }
             }
-        } else {
-            flag = false; 
         }
-        
-        if (flag) {
-           return 1;
-           }else{
-            return 0;
-           }
+    } else {
+        flag = false;
     }
+        
+    return flag;
+}
 
 int validate_age(int age)
 {
