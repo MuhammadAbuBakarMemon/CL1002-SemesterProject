@@ -11,7 +11,7 @@
 
 void register_voter(struct voter **voters, int *count, int *capacity)
 {
-    struct date deadline = {29, 11, 2024};
+    struct date deadline = {29, 11, 2025};
     if (!Deadline(deadline))
     {
         printf("Registration is closed. Deadline has passed.\n");
