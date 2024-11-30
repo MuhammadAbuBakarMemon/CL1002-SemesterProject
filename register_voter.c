@@ -55,7 +55,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     int attempts = 3;
     while (attempts > 0)
     {
-        printf("\nEnter your CNIC as (xxxxx-xxxxxxx-x): ");
+        printf("\nEnter your CNIC (without dashes): ");
         fgets(new_voter->CNIC, sizeof(new_voter->CNIC), stdin);
         new_voter->CNIC[strcspn(new_voter->CNIC, "\n")] = '\0';
 

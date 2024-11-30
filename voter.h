@@ -21,6 +21,7 @@ struct voter
     char Fname[31];
     int age;
     struct date DoB;
+    char date[21];
     struct address address;
     char PIN[6];
 };
