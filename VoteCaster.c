@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include <tsdboo;l.h>
 
 struct vote
 {
-    CNIC
+    char CNIC[14];
+    bool hasvoted = false;  
 };
 
 void CastVote()
@@ -93,7 +95,7 @@ void CastVote()
                 return;
             }
 
-            printf("")
+            
         }
 
     }
