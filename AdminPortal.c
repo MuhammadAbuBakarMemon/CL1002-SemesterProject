@@ -83,19 +83,26 @@ void AdminPortal()
         else
         {
             iterator = 0;
-            int expected_Candidates= 0;
+            int expected_Candidates = 0;
 
             struct Candidate *ptr;
-            printf("Please enter the number of expected candidates to register, don't worry as of now, if the estimation is incorrect and more/less candidates register in the end. We can reallocate the memory in our database.\n");
+            printf("Please enter the number of expected candidates to register, don't worry as of now, if the estimation is off and more or less candidates register in the end. We can reallocate the memory in our database.\n");
             scanf("%d", &expected_Candidates);
 
-            ptr = (can *) malloc(expectd_Candidates * (sizeof(can)));
-            can c = ptr;
+            ptr = (can *) malloc(expected_Candidates * (sizeof(can)));
 
-            while (fscanf(fptr, "%d %29s %29s %f %49s", &c[iterator].election_ID, c[iterator].CandidateName, c[iterator].Party_name, &c[iterator].votes_accumulated, c[iterator].seat_no) == 5)
+            if (ptr == NULL)
+            {
+                printf("Insufficient memory to create a chunk of the structure for the reqquired size dynamically.\n");
+                printf("Exiting Program.\n");
+                return;
+            }
+
+            while (fscanf(fptr, "%d %29s %29s %f %49s", &ptr[iterator].election_ID, ptr[iterator].CandidateName, ptr[iterator].Party_name, &ptr[iterator].votes_accumulated, ptr[iterator].seat_no) == 5)
             {
                 iterator++;
             }
+
             fclose(fptr);
         }
 
@@ -125,21 +132,28 @@ void AdminPortal()
 
                             ptr = realloc(ptr, expected_Candidates * sizeof(can));
 
+                            if (ptr == NULL)
+                            {
+                                printf("Insufficient memory.\n");
+                                printf("Exiting Program.\n");
+                                return;
+                            }
+
                         }
 
                         printf("Please enter the Election ID: ");
-                        scanf("%d", &c[iterator].election_ID);
+                        scanf("%d", &ptr[iterator].election_ID);
 
                         printf("Please enter the candidate's name: ");
-                        scanf("%s", c[iterator].CandidateName);
+                        scanf("%s", ptr[iterator].CandidateName);
 
                         printf("Please enter the party name: ");
-                        scanf("%s", c[iterator].Party_name);
+                        scanf("%s", ptr[iterator].Party_name);
 
                         printf("Please enter the seat number: ");
-                        scanf("%s", c[iterator].seat_no);
+                        scanf("%s", ptr[iterator].seat_no);
 
-                        c[iterator].votes_accumulated = 0.0;
+                        ptr[iterator].votes_accumulated = 0.0;
 
                         printf("Candidate entry made successfully.\n");
 
@@ -175,3 +189,4 @@ int main() {
     AdminPortal();
     return 0;
 }
+
