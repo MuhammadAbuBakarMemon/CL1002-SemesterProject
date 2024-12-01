@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <string.h>
-#include <tsdboo;l.h>
+#include <tsdbool.h>
+#include <stdbool.h>
 
 struct vote
 {
     char CNIC[14];
-    bool hasvoted = false;  
+    bool hasvoted = false; 
+    int election_ID; 
+    char current_residence;
+    // 'p' for in pakistan and 'n' for outside pokistan 
 };
 
 void CastVote()
@@ -83,19 +87,51 @@ void CastVote()
 
         int procede = 0;
 
-        printf("Press 1 to prooceede to the next page is you have made your decision for voting.\n");
+        printf("Press 1 to prooceede to the next page is you have made your decision for voting, kindly remeber your candidate's voting ID.\n");
         if (procede = 1)
         {
-            fptr = fopen("votesstorage.csv". "w");
+            fptr = fopen("votesstorage.csv". "a+");
 
             if (fptr == NULL)
             {
-                printf("file not found.\n");
+                printf("File not found.\n");
                 printf("Exiting Program.\n");
                 return;
             }
 
-            
+            struct vote temp;
+            struct vote reader;
+
+            printf("Please enter your CNIC number: \n");
+            fgets(temp.CNIC, 13, stdin);
+            temp.CNIC[strcspn(temp.CNIC, "\n")] = '\0';
+
+            while(fscanf(fptr, "%13s %d %d %c", reader.CINC, reader.hasvoted, reader.election_ID, reader.) == 4)
+            {
+                if (reader.CNIC == temp.CNIC)
+                {
+                    if (reader.CNIC == true)
+                    {
+                        printf("You have already voted, for this election campagin....\n");
+                        pritnf("Exiting Program.\n");
+                        fclose(fptr);
+                        return;
+                    }
+                }
+            }
+
+            printf("Please enter your current residence status 'p' for inside pakistan, and 'n' for outside pakistan: ");
+            scanf(" %c", &temp.residence);
+            temp.residence = to_lower(temp.residence);
+
+            printf("Please enter the Election Id of the candidate you have opted to cast your vote to: \n");
+            scanf("%d", &temp.election_ID);
+
+            hasvoted = true;
+
+            fpritnf(fptr, "%13s %d %d %c", temp.CNIC, temp.hasvoted, temp.election_ID, temp.current_residence);
+            fclose(fptr);
+             
         }
 
     }
