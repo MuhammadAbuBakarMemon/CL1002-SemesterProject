@@ -139,6 +139,7 @@ void AdminPortal()
                             scanf("%d", &expected_Candidates);
 
                             can *temp;
+                            
 
                             temp = realloc(ptr, expected_Candidates * sizeof(can));
 
@@ -177,13 +178,13 @@ void AdminPortal()
                 case 2:
                 {
 
-                    int disqualify = 0;
+                    int disqualifyID = 0;
 
                     printf("Please enter the voter whom you would like to disqualify: \n");
-                    scanf("%d", &disqualify);
+                    scanf("%d", &disqualifyID);
 
                     FILE *o_fptr;
-                    0_fptr = fopen("CandidateDetails.csv", "r");
+                    o_fptr = fopen("CandidateDetails.csv", "r");
 
                     if (fptr == NULL)
                     {
@@ -193,7 +194,7 @@ void AdminPortal()
                     }
 
                     FILE *t_fptr;
-                    t_fptr = fopen("TemporaryCandidateDetails.csv", "w+")
+                    t_fptr = fopen("TemporaryCandidateDetails.csv", "w+");
                     
                     if (t_fptr == NULL)
                     {
@@ -206,23 +207,51 @@ void AdminPortal()
                     int flag = 0;
                     can disqualified;
 
-                    while (!feof(o_fptr))
+                    while (fscanf(o_fptr, "%d %29s %29s %f %49s", &disqualified.election_ID, disqualified.CandidateName, disqualified.Party_name, &disqualified.votes_accumulated, disqualified.seat_no) == 5)
                     {
-                        if ()
+                        if (disqualifyID == disqualified.election_ID)
+                        {
+                            printf("Candidate with election ID (%d) has been dissqualified.\n", disqualified.election_ID);
+                            flag = 1;
+                        }
+                        else
+                        {
+                            fprintf(t_fptr, "%d %29s %29s %f %49s", disqualified.election_ID, disqualified.CandidateName, disqualified.Party_name, disqualified.votes_accumulated, disqualified.seat_no);
+
+                        }
+
+                        fclose(o_fptr);
+                        fclose(t_fptr);
                     }
 
+                    if (flag)
+                    {
+
+                        remove("CandidateDetails.csv");
+                        rename("TemporaryCandidateDetails.csv", "CandidateDetails.csv");
+
+                    }
+                    else
+                    {
+                        printf("No candidate found with record of Election ID (%d), hence no reord was deleted.\n", disqualifyID);
+
+                        remove("TemporaryCandidateDetails.csv");
+                    }
                     
 
                     break;
                 }
                     
                 case 3:
+
+                    // Sharjeel your code will come here
+
                     break;
 
                 case 4:
                 {
                     printf("Logging out.\n");
-                    printf("jazakallah for using the Online Voter System. \n");
+                    printf("Jazakallah for using the Online Voter System. \n");
 
                     break;
                 }
@@ -237,7 +266,7 @@ void AdminPortal()
 
         } while (option != 4);
 
-        free(ptr)
+        free(ptr);
     }
 }
 
@@ -245,6 +274,7 @@ int main() {
     AdminPortal();
     return 0;
 }
+
 
 
 
