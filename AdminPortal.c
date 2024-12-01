@@ -65,6 +65,10 @@ void AdminPortal()
         }
     }
 
+    int expected_Candidates = 0;
+    int total_candidates_count = 0;
+    struct candidate *ptr;
+
     if (flag == 1)
     {
 
@@ -79,7 +83,7 @@ void AdminPortal()
             if (fptr == NULL)
             {
                 printf("Error creating the file.\n");
-                return 0;
+                return;
             }
 
             fclose(fptr);
@@ -89,15 +93,10 @@ void AdminPortal()
 
             fptr = fopen("CandidateDetails.csv", "r+");
 
-            int expected_Candidates = 0;
-            int total_candidates_count = 0;
-
-            struct Candidate *ptr;
-
             printf("Please enter the number of expected candidates to register, don't worry as of now, if the estimation is off and more or less candidates register in the end. We can reallocate the memory in our database.\n");
             scanf("%d", &expected_Candidates);
 
-            ptr = (can *) malloc(expected_Candidates * (sizeof(can)));
+            ptr = (can *) malloc(expected_Candidates * sizeof(can) );
 
             if (ptr == NULL)
             {
@@ -139,7 +138,6 @@ void AdminPortal()
                             scanf("%d", &expected_Candidates);
 
                             can *temp;
-                            
 
                             temp = realloc(ptr, expected_Candidates * sizeof(can));
 
@@ -271,7 +269,7 @@ void AdminPortal()
 }
 
 int main() {
-    AdminPortal();
+    // AdminPortal();
     return 0;
 }
 
