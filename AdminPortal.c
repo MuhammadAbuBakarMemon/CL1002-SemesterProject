@@ -8,15 +8,14 @@ struct Admin
     int p_code;
 };
 
-
 typedef struct candidate
 {
     int election_ID;
     char CandidateName[30];
     char Party_name[30];
     float votes_accumulated;
-    char seat_no[50];       // seat in the national assembly (NA-247) the candidate is contesting for in the elections
-} can ;
+    char seat_no[50]; // seat in the national assembly (NA-247) the candidate is contesting for in the elections
+} can;
 
 void AdminPortal()
 {
@@ -42,7 +41,6 @@ void AdminPortal()
     int flag = 0;
     char u_name[30];
     int p_code = 0;
-
 
     printf("Please enter your username: \n");
     fgets(u_name, sizeof(u_name), stdin);
@@ -96,7 +94,7 @@ void AdminPortal()
             printf("Please enter the number of expected candidates to register, don't worry as of now, if the estimation is off and more or less candidates register in the end. We can reallocate the memory in our database.\n");
             scanf("%d", &expected_Candidates);
 
-            ptr = (can *) malloc(expected_Candidates * sizeof(can) );
+            ptr = (can *)malloc(expected_Candidates * sizeof(can));
 
             if (ptr == NULL)
             {
@@ -113,9 +111,8 @@ void AdminPortal()
             fclose(fptr);
         }
 
-
         int option = 0;
-        
+
         do
         {
             printf("Welcome to the Admin Portal.\n");
@@ -128,152 +125,158 @@ void AdminPortal()
             switch (option)
             {
 
-                case 1:
-                    {
-                        
-                        if (total_candidates_count >= expected_Candidates)
-                        {
-                            printf("Reallocation of memory is required to add more candidates.\n");
-                            printf("Now based on the number of registeration, Please augment the number of candidates: \n");
-                            scanf("%d", &expected_Candidates);
+            case 1:
+            {
 
-                            can *temp;
-
-                            temp = realloc(ptr, expected_Candidates * sizeof(can));
-
-                            if (temp == NULL)
-                            {
-                                printf("Insufficient memory.\n");
-                                printf("Exiting Program.\n");\
-
-                                free(ptr);
-                                return;
-                            }
-                            ptr = temp;
-
-                        }
-
-                        printf("Please enter the Election ID: ");
-                        scanf("%d", &ptr[total_candidates_count].election_ID);
-
-                        printf("Please enter the candidate's name: ");
-                        scanf("%s", ptr[total_candidates_count].CandidateName);
-
-                        printf("Please enter the party name: ");
-                        scanf("%s", ptr[total_candidates_count].Party_name);
-
-                        printf("Please enter the seat number: ");
-                        scanf("%s", ptr[total_candidates_count].seat_no);
-
-                        ptr[total_candidates_count].votes_accumulated = 0.0;
-
-                        printf("Candidate entry made successfully.\n");
-
-                        total_candidates_count++;
-                        break;
-                    }
-
-                case 2:
+                if (total_candidates_count >= expected_Candidates)
                 {
+                    printf("Reallocation of memory is required to add more candidates.\n");
+                    printf("Now based on the number of registeration, Please augment the number of candidates: \n");
+                    scanf("%d", &expected_Candidates);
 
-                    int disqualifyID = 0;
+                    can *temp;
 
-                    printf("Please enter the voter whom you would like to disqualify: \n");
-                    scanf("%d", &disqualifyID);
+                    temp = realloc(ptr, expected_Candidates * sizeof(can));
 
-                    FILE *o_fptr;
-                    o_fptr = fopen("CandidateDetails.csv", "r");
-
-                    if (fptr == NULL)
+                    if (temp == NULL)
                     {
-                        printf("Unfortunately, the file was not found, someone with unauthoprized access might have delted your file (candidateDetails.csv).\n");
-                        break;
+                        printf("Insufficient memory.\n");
+                        printf("Exiting Program.\n");
 
+                        free(ptr);
+                        return;
                     }
+                    ptr = temp;
+                }
 
-                    FILE *t_fptr;
-                    t_fptr = fopen("TemporaryCandidateDetails.csv", "w+");
-                    
-                    if (t_fptr == NULL)
+                printf("Please enter the Election ID: ");
+                scanf("%d", &ptr[total_candidates_count].election_ID);
+
+                printf("Please enter the candidate's name: ");
+                scanf("%s", ptr[total_candidates_count].CandidateName);
+
+                printf("Please enter the party name: ");
+                scanf("%s", ptr[total_candidates_count].Party_name);
+
+                printf("Please enter the seat number: ");
+                scanf("%s", ptr[total_candidates_count].seat_no);
+
+                ptr[total_candidates_count].votes_accumulated = 0.0;
+
+                printf("Candidate entry made successfully.\n");
+
+                total_candidates_count++;
+                break;
+            }
+
+            case 2:
+            {
+
+                int disqualifyID = 0;
+
+                printf("Please enter the voter whom you would like to disqualify: \n");
+                scanf("%d", &disqualifyID);
+
+                FILE *o_fptr;
+                o_fptr = fopen("CandidateDetails.csv", "r");
+
+                if (fptr == NULL)
+                {
+                    printf("Unfortunately, the file was not found, someone with unauthoprized access might have delted your file (candidateDetails.csv).\n");
+                    break;
+                }
+
+                FILE *t_fptr;
+                t_fptr = fopen("TemporaryCandidateDetails.csv", "w+");
+
+                if (t_fptr == NULL)
+                {
+                    printf("Failed to create teporary file for storing the details of the candidates.\n");
+                    fclose(o_fptr);
+                    break;
+                }
+
+                int flag = 0;
+                can disqualified;
+
+                while (fscanf(o_fptr, "%d %29s %29s %f %49s", &disqualified.election_ID, disqualified.CandidateName, disqualified.Party_name, &disqualified.votes_accumulated, disqualified.seat_no) == 5)
+                {
+                    if (disqualifyID == disqualified.election_ID)
                     {
-                        printf("Failed to create teporary file for storing the details of the candidates.\n");
-                        fclose(o_fptr);
-                        break;
-
-                    }
-
-                    int flag = 0;
-                    can disqualified;
-
-                    while (fscanf(o_fptr, "%d %29s %29s %f %49s", &disqualified.election_ID, disqualified.CandidateName, disqualified.Party_name, &disqualified.votes_accumulated, disqualified.seat_no) == 5)
-                    {
-                        if (disqualifyID == disqualified.election_ID)
-                        {
-                            printf("Candidate with election ID (%d) has been dissqualified.\n", disqualified.election_ID);
-                            flag = 1;
-                        }
-                        else
-                        {
-                            fprintf(t_fptr, "%d %29s %29s %f %49s", disqualified.election_ID, disqualified.CandidateName, disqualified.Party_name, disqualified.votes_accumulated, disqualified.seat_no);
-
-                        }
-
-                        fclose(o_fptr);
-                        fclose(t_fptr);
-                    }
-
-                    if (flag)
-                    {
-
-                        remove("CandidateDetails.csv");
-                        rename("TemporaryCandidateDetails.csv", "CandidateDetails.csv");
-
+                        printf("Candidate with election ID (%d) has been dissqualified.\n", disqualified.election_ID);
+                        flag = 1;
                     }
                     else
                     {
-                        printf("No candidate found with record of Election ID (%d), hence no reord was deleted.\n", disqualifyID);
-
-                        remove("TemporaryCandidateDetails.csv");
+                        fprintf(t_fptr, "%d %29s %29s %f %49s", disqualified.election_ID, disqualified.CandidateName, disqualified.Party_name, disqualified.votes_accumulated, disqualified.seat_no);
                     }
-                    
 
-                    break;
+                    fclose(o_fptr);
+                    fclose(t_fptr);
                 }
-                    
-                case 3:
 
-                    // Sharjeel your code will come here
-
-                    break;
-
-                case 4:
+                if (flag)
                 {
-                    printf("Logging out.\n");
-                    printf("Jazakallah for using the Online Voter System. \n");
 
-                    break;
+                    remove("CandidateDetails.csv");
+                    rename("TemporaryCandidateDetails.csv", "CandidateDetails.csv");
                 }
-
-                default:
+                else
                 {
-                    printf("Invalid option was chosen. Please try again.\n");
-                    break;
+                    printf("No candidate found with record of Election ID (%d), hence no reord was deleted.\n", disqualifyID);
+
+                    remove("TemporaryCandidateDetails.csv");
                 }
 
+                break;
             }
 
-        } while (option != 4);
+            case 3:
+            {
+    
+                 can result;
+                FILE *fptr;
 
-        free(ptr);
+                fptr = fopen("CandidateDetails.csv", "r");
+                if (fptr == NULL)
+                {
+                    printf("No records found.\n");
+                    return;
+                }
+
+                while (fscanf(fptr, "%d %29s %29s %f %49s",
+                              &result.election_ID, result.CandidateName, result.Party_name, &result.votes_accumulated,result.seat_no) != EOF)
+                {
+                    printf("Name: %s, Election ID: %d, Party Name: %s, Seat No: %s, Votes Accumulated: %.2f\n",
+                           result.CandidateName, result.election_ID, result.Party_name, result.seat_no,result.votes_accumulated);
+                }
+
+                fclose(fptr);
+            }
+            break;
+
+        case 4:
+        {
+            printf("Logging out.\n");
+            printf("Jazakallah for using the Online Voter System. \n");
+
+            break;
+        }
+
+        default:
+        {
+            printf("Invalid option was chosen. Please try again.\n");
+            break;
+        }
+        }
     }
+    while (option != 4);
+    free(ptr);
+}
 }
 
-int main() {
+int main()
+{
     // AdminPortal();
     return 0;
 }
-
-
-
-
-

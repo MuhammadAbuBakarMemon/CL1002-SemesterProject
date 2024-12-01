@@ -2,7 +2,7 @@
 
 void CastVote()
 {
-    
+ 
 }
 
 int main(void)

@@ -61,6 +61,7 @@ void logIn()
     if (found)
     {
         printf("Login successful!\n");
+    
         getchar();
         sleep(10);
         system("cls");
