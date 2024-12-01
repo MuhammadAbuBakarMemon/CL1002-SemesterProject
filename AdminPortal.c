@@ -68,24 +68,32 @@ void AdminPortal()
     if (flag == 1)
     {
 
-        int t_entries = 0;
-
         fptr = fopen("CandidateDetails.csv", "r");
 
         if (fptr == NULL)
         {
             printf("File does not exist because you're probably making the first candidate's entry.\n");
             printf("Creating the file.\n");
-            fptr = fopen("CandidateDetails.csv", "w");
-            t_entries = 0;
+            fptr = fopen("CandidateDetails.txt", "w");
+
+            if (fptr == NULL)
+            {
+                printf("Error creating the file.\n");
+                return 0;
+            }
+
             fclose(fptr);
         }
         else
         {
-            iterator = 0;
+
+            fptr = fopen("CandidateDetails.csv", "r+");
+
             int expected_Candidates = 0;
+            int total_candidates_count = 0;
 
             struct Candidate *ptr;
+
             printf("Please enter the number of expected candidates to register, don't worry as of now, if the estimation is off and more or less candidates register in the end. We can reallocate the memory in our database.\n");
             scanf("%d", &expected_Candidates);
 
@@ -98,9 +106,9 @@ void AdminPortal()
                 return;
             }
 
-            while (fscanf(fptr, "%d %29s %29s %f %49s", &ptr[iterator].election_ID, ptr[iterator].CandidateName, ptr[iterator].Party_name, &ptr[iterator].votes_accumulated, ptr[iterator].seat_no) == 5)
+            while (fscanf(fptr, "%d %29s %29s %f %49s", &ptr[total_candidates_count].election_ID, ptr[total_candidates_count].CandidateName, ptr[total_candidates_count].Party_name, &ptr[total_candidates_count].votes_accumulated, ptr[total_candidates_count].seat_no) == 5)
             {
-                iterator++;
+                total_candidates_count++;
             }
 
             fclose(fptr);
@@ -124,40 +132,45 @@ void AdminPortal()
                 case 1:
                     {
                         
-                        if (iterator >= expected_Candidates)
+                        if (total_candidates_count >= expected_Candidates)
                         {
                             printf("Reallocation of memory is required to add more candidates.\n");
                             printf("Now based on the number of registeration, Please augment the number of candidates: \n");
                             scanf("%d", &expected_Candidates);
 
-                            ptr = realloc(ptr, expected_Candidates * sizeof(can));
+                            can *temp;
 
-                            if (ptr == NULL)
+                            temp = realloc(ptr, expected_Candidates * sizeof(can));
+
+                            if (temp == NULL)
                             {
                                 printf("Insufficient memory.\n");
-                                printf("Exiting Program.\n");
+                                printf("Exiting Program.\n");\
+
+                                free(ptr);
                                 return;
                             }
+                            ptr = temp;
 
                         }
 
                         printf("Please enter the Election ID: ");
-                        scanf("%d", &ptr[iterator].election_ID);
+                        scanf("%d", &ptr[total_candidates_count].election_ID);
 
                         printf("Please enter the candidate's name: ");
-                        scanf("%s", ptr[iterator].CandidateName);
+                        scanf("%s", ptr[total_candidates_count].CandidateName);
 
                         printf("Please enter the party name: ");
-                        scanf("%s", ptr[iterator].Party_name);
+                        scanf("%s", ptr[total_candidates_count].Party_name);
 
                         printf("Please enter the seat number: ");
-                        scanf("%s", ptr[iterator].seat_no);
+                        scanf("%s", ptr[total_candidates_count].seat_no);
 
-                        ptr[iterator].votes_accumulated = 0.0;
+                        ptr[total_candidates_count].votes_accumulated = 0.0;
 
                         printf("Candidate entry made successfully.\n");
 
-                        iterator++;
+                        total_candidates_count++;
                         break;
                     }
 
@@ -182,6 +195,8 @@ void AdminPortal()
             }
 
         } while (option != 4);
+
+        free(ptr)
     }
 }
 
@@ -189,4 +204,5 @@ int main() {
     AdminPortal();
     return 0;
 }
+
 
