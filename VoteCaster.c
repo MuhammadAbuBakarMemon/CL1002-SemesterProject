@@ -12,6 +12,16 @@ struct vote
     // 'p' for in pakistan and 'n' for outside pokistan 
 };
 
+typedef struct candidate
+{
+    int election_ID;
+    char CandidateName[30];
+    char Party_name[30];
+    float votes_accumulated;
+    char seat_no[50];       // seat in the national assembly (NA-247) the candidate is contesting for in the elections
+} can ;
+
+
 void CastVote()
 {
 
@@ -121,6 +131,7 @@ void CastVote()
             }
 
             printf("Please enter your current residence status 'p' for inside pakistan, and 'n' for outside pakistan: ");
+            printf("Please note that crrent pakistani's will have their votes counted by 1 and on the samke side an individual who is not a current pakistani resident wil have therivoted counted as 0.8 wightage.\n");
             scanf(" %c", &temp.residence);
             temp.residence = to_lower(temp.residence);
 
@@ -131,7 +142,27 @@ void CastVote()
 
             fpritnf(fptr, "%13s %d %d %c", temp.CNIC, temp.hasvoted, temp.election_ID, temp.current_residence);
             fclose(fptr);
-             
+
+            fptr = fopen("CandidateDetails.csv", "r+");
+
+            if (fptr == NULL)
+            {
+                printf("File not found.\n");
+                printf("Exiting Program.\n");
+                return;
+            }
+
+            struct candidate iterater;
+
+            while (fscanf(fptr, "%d %29s %29s %f %49s", &iterater.election_ID, iterater.CandidateName, iterater.Party_name, iterater.votes_accumulated, iterater.seat_no) == 5)
+            {
+                if (iterater.election_ID == temp.election_ID)
+                {
+                    if (temp.)
+                }
+            }
+
+
         }
 
     }
