@@ -158,6 +158,10 @@ void CastVote()
             {
                 if (iterater.election_ID == temp.election_ID)
                 {
+
+                    // the below part is the implementatiuon of the feature that iverseas pakistanis may cast 
+                    // their vote but at a lesser weightage to the pakistanis that currently reside in the country
+
                     if (temp.current_residence == 'p')
                     {
                         iterater.votes_accumulated += 1;
