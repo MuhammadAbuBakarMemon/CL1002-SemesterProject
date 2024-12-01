@@ -175,14 +175,33 @@ void AdminPortal()
                     }
 
                 case 2:
+                {
+
+                    int disqualify = 0;
+
+                    printf("Please enter the voter whom you would like to disqualify: \n");
+                    scanf("%d", &disqualify);
+
+                    FILE *fptr;
+                    fptr = fopen("CandidateDetails.csv", "r+");
+
+                    int candidate_counter = 0;
+
+                    while (!feof(fptr))
+                    {
+                        candidate_counter = 
+                    }
+
                     break;
+                }
+                    
                 case 3:
                     break;
 
                 case 4:
                 {
                     printf("Logging out.\n");
-                    printf("jazakallah for using the Online Voter Sysytem, If you have any releavnt feedback do prvide it to us. \n");
+                    printf("jazakallah for using the Online Voter System, If you have any releavnt feedback do prvide it to us. \n");
                     break;
                 }
 
@@ -204,5 +223,6 @@ int main() {
     AdminPortal();
     return 0;
 }
+
 
 
