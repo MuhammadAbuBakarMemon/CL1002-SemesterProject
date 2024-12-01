@@ -182,15 +182,36 @@ void AdminPortal()
                     printf("Please enter the voter whom you would like to disqualify: \n");
                     scanf("%d", &disqualify);
 
-                    FILE *fptr;
-                    fptr = fopen("CandidateDetails.csv", "r+");
+                    FILE *o_fptr;
+                    0_fptr = fopen("CandidateDetails.csv", "r");
 
-                    int candidate_counter = 0;
-
-                    while (!feof(fptr))
+                    if (fptr == NULL)
                     {
-                        candidate_counter = 
+                        printf("Unfortunately, the file was not found, someone with unauthoprized access might have delted your file (candidateDetails.csv).\n");
+                        break;
+
                     }
+
+                    FILE *t_fptr;
+                    t_fptr = fopen("TemporaryCandidateDetails.csv", "w+")
+                    
+                    if (t_fptr == NULL)
+                    {
+                        printf("Failed to create teporary file for storing the details of the candidates.\n");
+                        fclose(o_fptr);
+                        break;
+
+                    }
+
+                    int flag = 0;
+                    can disqualified;
+
+                    while (!feof(o_fptr))
+                    {
+                        if ()
+                    }
+
+                    
 
                     break;
                 }
@@ -201,7 +222,8 @@ void AdminPortal()
                 case 4:
                 {
                     printf("Logging out.\n");
-                    printf("jazakallah for using the Online Voter System, If you have any releavnt feedback do prvide it to us. \n");
+                    printf("jazakallah for using the Online Voter System. \n");
+
                     break;
                 }
 
@@ -223,6 +245,7 @@ int main() {
     AdminPortal();
     return 0;
 }
+
 
 
 
