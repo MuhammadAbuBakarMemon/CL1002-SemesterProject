@@ -1,6 +1,6 @@
-
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 struct Admin
 {
@@ -8,54 +8,52 @@ struct Admin
     int p_code;
 };
 
-struct candidate
+
+typedef struct candidate
 {
     int election_ID;
     char CandidateName[30];
     char Party_name[30];
     float votes_accumulated;
-    char seat_no[50];   // seat in the national assembly (NA-247) the candidate is contesting for in the elections
-};
+    char seat_no[50];       // seat in the national assembly (NA-247) the candidate is contesting for in the elections
+} can ;
 
 void AdminPortal()
 {
-
     FILE *fptr;
-    fptr = fopen("AdminCredentils.csv", "r")
+    fptr = fopen("AdminCredentils.csv", "r");
 
     if (fptr == NULL)
     {
-        printf("File could not be found. A third party might have messed up with your files.\n");
-        return 0;
+        printf("File could not be found. A third party might have messed up with your files....\n");
+        return;
     }
 
     struct Admin ad[20];
-
     int iterator = 0;
 
-    while (!feof(fl))
+    while (fscanf(fptr, "%29s %d", ad[iterator].u_name, &ad[iterator].p_code) == 2)
     {
-        if (fscanf(fptr, "%20s %d", ad[iterator].u_name, ad[iterator].p_code))
-        {
-            iterator++;
-        }
+        iterator++;
     }
 
     fclose(fptr);
-    
+
     int flag = 0;
     char u_name[30];
     int p_code = 0;
 
-    pritnf("Please enter your username: \n");
-    fgets(u_name, sizeof(u_name), stdin);
 
-    printf("please enter your pasword: \n");
+    printf("Please enter your username: \n");
+    fgets(u_name, sizeof(u_name), stdin);
+    u_name[strcspn(u_name, "\n")] = 0;
+
+    printf("Please enter your password: \n");
     scanf("%d", &p_code);
 
-    for (int m = 0; m < count; m++)
+    for (int m = 0; m < iterator; m++)
     {
-        if ( (strcmp(u_name, ad[m].u_name) == 0) && (p_code == ad[m].p_code) )
+        if ((strcmp(u_name, ad[m].u_name) == 0) && (p_code == ad[m].p_code))
         {
             printf("Admin Credentials matched and verified, You have successfully logged in.\n");
             flag = 1;
@@ -76,50 +74,104 @@ void AdminPortal()
 
         if (fptr == NULL)
         {
-            printf("File does not exist because you're probably making th first candidate's entry.\n");
-        }
-        else
-        {
-            fptr = fopen("candidateDetials.csv", "w");
+            printf("File does not exist because you're probably making the first candidate's entry.\n");
+            printf("Creating the file.\n");
+            fptr = fopen("CandidateDetails.csv", "w");
             t_entries = 0;
             fclose(fptr);
         }
+        else
+        {
+            iterator = 0;
+            int expected_Candidates= 0;
+
+            struct Candidate *ptr;
+            printf("Please enter the number of expected candidates to register, don't worry as of now, if the estimation is incorrect and more/less candidates register in the end. We can reallocate the memory in our database.\n");
+            scanf("%d", &expected_Candidates);
+
+            ptr = (can *) malloc(expectd_Candidates * (sizeof(can)));
+            can c = ptr;
+
+            while (fscanf(fptr, "%d %29s %29s %f %49s", &c[iterator].election_ID, c[iterator].CandidateName, c[iterator].Party_name, &c[iterator].votes_accumulated, c[iterator].seat_no) == 5)
+            {
+                iterator++;
+            }
+            fclose(fptr);
+        }
+
 
         int option = 0;
         
-        do 
+        do
         {
             printf("Welcome to the Admin Portal.\n");
             printf("1. Add candidate\n");
             printf("2. Disqualify candidate\n");
             printf("3. View Live Votes tally.\n");
             printf("4. Logout.\n");
-            scanf("%d", option);
+            scanf("%d", &option);
 
-            switch (option) 
+            switch (option)
             {
 
-                case 1 :
+                case 1:
+                    {
+                        
+                        if (iterator >= expected_Candidates)
+                        {
+                            printf("Reallocation of memory is required to add more candidates.\n");
+                            printf("Now based on the number of registeration, Please augment the number of candidates: \n");
+                            scanf("%d", &expected_Candidates);
+
+                            ptr = realloc(ptr, expected_Candidates * sizeof(can));
+
+                        }
+
+                        printf("Please enter the Election ID: ");
+                        scanf("%d", &c[iterator].election_ID);
+
+                        printf("Please enter the candidate's name: ");
+                        scanf("%s", c[iterator].CandidateName);
+
+                        printf("Please enter the party name: ");
+                        scanf("%s", c[iterator].Party_name);
+
+                        printf("Please enter the seat number: ");
+                        scanf("%s", c[iterator].seat_no);
+
+                        c[iterator].votes_accumulated = 0.0;
+
+                        printf("Candidate entry made successfully.\n");
+
+                        iterator++;
+                        break;
+                    }
+
+                case 2:
+                    break;
+                case 3:
+                    break;
+
+                case 4:
                 {
-                   printf("Please start providing us with the necessary details to add a candidate: \n"); 
-
-                   printf("Please enter the Election ID Number: \n");
-
-                   printf("Please enteer your candidate's name3: \n");
-
-                   printf("please enter the party the respective candidate is representoing (Mention N/A for Azad Umeedwar): \n");
-
-                   
-
-                   printf("Please enter the seat in the national assembly the candidate is contesting for: \n");
+                    printf("Logging out.\n");
+                    printf("jazakallah for using the Online Voter Sysytem, If you have any releavnt feedback do prvide it to us. \n");
+                    break;
                 }
+
+                default:
+                {
+                    printf("Invalid option was chosen. Please try again.\n");
+                    break;
+                }
+
             }
 
-
-        } while (option != 4)
-
+        } while (option != 4);
     }
+}
 
-
-
+int main() {
+    AdminPortal();
+    return 0;
 }
