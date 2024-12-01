@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
+struct vote
+{
+    CNIC
+};
+
 void CastVote()
 {
 
@@ -34,6 +39,13 @@ void CastVote()
         // this file was was created in Adminportal.c
         fptr = fopen("CandidateDetails.csv", "r");
 
+        if (fptr == NULL)
+        {
+            printf("file not found.\n");
+            printf("Exiting Program.\n");
+            return;
+        }
+
         printf("Below are the candidates that are contesting for the national assembly's seat number that you specified\n");
         pritnf("Please not that if you do not see any output on the screen this means that there was an error in inputting the ")
         
@@ -60,6 +72,8 @@ void CastVote()
             }
         }
 
+        fclose(fptr);
+
         if (!flag)
         {
             printf("You probably made as error while writing the national Assembly's seat number, because there seems to be no voter registered and contesting for the seat number {%49s}.\n", s_no);
@@ -70,7 +84,16 @@ void CastVote()
         printf("Press 1 to prooceede to the next page is you have made your decision for voting.\n");
         if (procede = 1)
         {
+            fptr = fopen("votesstorage.csv". "w");
 
+            if (fptr == NULL)
+            {
+                printf("file not found.\n");
+                printf("Exiting Program.\n");
+                return;
+            }
+
+            printf("")
         }
 
     }
