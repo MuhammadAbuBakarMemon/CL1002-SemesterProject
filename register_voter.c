@@ -11,7 +11,7 @@
 
 void register_voter(struct voter **voters, int *count, int *capacity)
 {
-    struct date deadline = {29, 11, 2024};
+    struct date deadline = {29, 11, 2025};
     if (!Deadline(deadline))
     {
         printf("Registration is closed. Deadline has passed.\n");
@@ -55,7 +55,7 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     int attempts = 3;
     while (attempts > 0)
     {
-        printf("\nEnter your CNIC as (xxxxx-xxxxxxx-x): ");
+        printf("\nEnter your CNIC (without dashes): ");
         fgets(new_voter->CNIC, sizeof(new_voter->CNIC), stdin);
         new_voter->CNIC[strcspn(new_voter->CNIC, "\n")] = '\0';
 
