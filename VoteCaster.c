@@ -154,23 +154,44 @@ void CastVote()
 
             struct candidate iterater;
 
-            while (fscanf(fptr, "%d %29s %29s %f %49s", &iterater.election_ID, iterater.CandidateName, iterater.Party_name, iterater.votes_accumulated, iterater.seat_no) == 5)
+            while (fscanf(fptr, "%d %29s %29s %f %49s", &iterater.election_ID, iterater.CandidateName, iterater.Party_name, &iterater.votes_accumulated, iterater.seat_no) == 5)
             {
                 if (iterater.election_ID == temp.election_ID)
                 {
-                    if (temp.)
+                    if (temp.current_residence == 'p')
+                    {
+                        iterater.votes_accumulated += 1;
+                        fprintf(fptr, "%d %29s %29s %f %49s", iterater.election_ID, iterater.CandidateName, iterater.Party_name, iterater.votes_accumulated, iterater.seat_no);
+                    }
+                    else if (temp.current_residence == 'n')
+                    {
+                        iterater.votes_accumulated += 0.8;
+                        fprintf(fptr, "%d %29s %29s %f %49s", iterater.election_ID, iterater.CandidateName, iterater.Party_name, iterater.votes_accumulated, iterater.seat_no);    
+                    }
+                    else
+                    {
+                        printf("Invalid nationality was entered, most probably a typo from your end....\n");
+                    }
                 }
+                else
+                {
+                    printf("No such candidate to vote for with the provided election ID....\n");
+                }
+
             }
 
+            fclose(fptr);=
 
         }
 
     }
+
+    return 0;
    
 }
 
 int main(void)
 {
-
+    // castVote();
     return 0;
 }
