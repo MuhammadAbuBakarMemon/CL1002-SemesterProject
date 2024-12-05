@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +8,6 @@
 #include <unistd.h>
 #include "voter.h"
 #include "validate.h"
-#include "deadline.h"
 
 void register_voter(struct voter **voters, int *count, int *capacity)
 {
@@ -100,11 +100,6 @@ void register_voter(struct voter **voters, int *count, int *capacity)
         }
         fclose(fp);
     }
-    else
-    {
-        printf("Error opening the file for reading!\n");
-        return;
-    }
 
     printf("Enter Age: ");
     scanf("%d", &new_voter->age);
@@ -163,3 +158,4 @@ void register_voter(struct voter **voters, int *count, int *capacity)
     printf("\n\nRegistration Successful!\n\n");
     sleep(2);
 }
+

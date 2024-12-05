@@ -1,8 +1,11 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include "voter.h"
+#include "voteCaster.h"
+
 
 void logIn()
 {
@@ -62,8 +65,9 @@ void logIn()
     {
         printf("Login successful!\n");
         getchar();
-        sleep(10);
+        sleep(3);
         system("cls");
+        castVote();
     }
     else
     {

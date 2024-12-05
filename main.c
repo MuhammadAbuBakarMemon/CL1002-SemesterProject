@@ -46,6 +46,10 @@ int main()
             printf("Exiting the system. Goodbye!\n");
             free(voters);
             return 0;
+        case 1223:
+            system("cls");
+             AdminPortal();
+             break;
         default:
             system("cls");
             printf("Invalid choice. Please try again.\n");

@@ -1,6 +1,9 @@
 #ifndef VOTER_H
 #define VOTER_H
 
+#include <time.h>
+#include <stdbool.h>
+
 struct date
 {
     int day;
@@ -29,5 +32,7 @@ struct voter
 void register_voter(struct voter **voters, int *count, int *capacity);
 int validate_CNIC(const char *cinc);
 void logIn();
-
+void castVote();
+bool Deadline(struct date deadline);
+void AdminPortal();
 #endif
