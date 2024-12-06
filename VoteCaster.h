@@ -134,7 +134,7 @@ void castVote()
             fgets(temp.CNIC, 13, stdin);
             temp.CNIC[strcspn(temp.CNIC, "\n")] = '\0';
 
-            while (fscanf(fptr, "%13s,%d,%d,%c\n", reader.CNIC, reader.hasvoted, reader.election_ID, reader.current_residence) == 4)
+            while (fscanf(fptr, "%13s,%d,%d,%c\n", temp.CNIC, temp.hasvoted, temp.election_ID, temp.current_residence) == 4)
             {
                 if (!strcmp(reader.CNIC, temp.CNIC))
                 {
