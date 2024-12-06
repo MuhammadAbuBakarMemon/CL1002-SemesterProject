@@ -6,6 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include "feedback.h"
 
 struct vote
 {
@@ -39,13 +40,15 @@ void castVote()
     if (!Deadline(t_date))
     {
         printf("The dealine for voting has passed....\n");
+        printf("Exiting the Voting Option.\n");
+        return;
     }
     else
     {
         printf("You are just in time to cast your vote for this year's (2024)'s general elections.\n");
 
         printf("Below are the details of all the eligible candidates you may cast your vote to:\n\n ");
-        printf("Remember as a responsible citizen it is our duty to ensure that the deserving candidate with a genuiine maddate gets the National assembly's seat.\n");
+        printf("Remember as a responsible citizen it is our duty to ensure that the deserving candidate with a genuine mandate gets the National assembly's seat.\n");
 
         char s_no[6];
 
@@ -74,21 +77,22 @@ void castVote()
         struct candidate c2;
         int flag = 0;
 
+        int candidate_counter = 0;
+
         // this structure was defined in Adminportal.c
         while (fscanf(fptr, "%d,%29[^,],%29[^,],%f,%5[^\n]\n", &c2.election_ID, c2.CandidateName, c2.Party_name, &c2.votes_accumulated, c2.seat_no) == 5)
         {
-            int candidate_counter = 0;
 
             if (!strcmp(c2.seat_no, s_no))
             {
 
                 flag = 1;
 
-                printf("Candidate number %d's details are as follow: \n", candidate_counter + 1);
+                printf("\nCandidate number %d's details are as follow: \n\n", candidate_counter + 1);
                 printf("The Election ID of the candidate is: %d.\n", c2.election_ID);
-                printf("The Candidate Name is: %29s.\n", c2.CandidateName);
-                printf("The Party the candidate 'Election ID: %d' is associated with is: %29s\n", c2.election_ID, c2.Party_name);
-                printf("The seat Number is: %5s\n", c2.seat_no);
+                printf("The Candidate Name is: %s.\n", c2.CandidateName);
+                printf("The Party the candidate 'Election ID: %d' is associated with is: %s\n", c2.election_ID, c2.Party_name);
+                printf("The seat Number is: %s\n", c2.seat_no);
 
                 candidate_counter++;
             }
@@ -101,10 +105,14 @@ void castVote()
             printf("You probably made as error while writing the national Assembly's seat number, because there seems to be no voter registered and contesting for the seat number '%5s'.\n", s_no);
         }
 
+
         int procede = 0;
 
-        printf("Press 1 to prooceede to the next page is you have made your decision for voting, kindly remeber your candidate's voting ID.\n");
-        if (procede = 1)
+        printf("Press 1 to prooceede to the next page is you have made your decision for voting,\n Kindly remember your candidate's voting ID.\n");
+        printf("Would you like to continue; ");
+        scanf("%d", &procede);
+
+        if (procede)
         {
             fptr = fopen("votesstorage.csv", "a+");
 
@@ -119,6 +127,8 @@ void castVote()
             struct vote reader;
 
             reader.hasvoted = false;
+
+            getchar();
 
             printf("Please enter your CNIC number: \n");
             fgets(temp.CNIC, 13, stdin);
@@ -140,8 +150,8 @@ void castVote()
                 }
             }
 
-            printf("Please note that crrent pakistani's will have their votes counted by 1 and on the same side an individual who is not a pakistani resident wil have their vote counted as 0.8 weightage.\n");
-            printf("'p' for inside pakistan, and 'n' for outside pakistan.\n");
+            printf("\nPlease note that current pakistani's will have their votes counted by 1 \nand on the same side an individual who is not a pakistani resident wil have their vote counted as 0.8 weightage.\n");
+            printf("'p' for inside pakistan, and 'n' for outside pakistan.\n\n");
             printf("Enter your current residence status: ");
             scanf(" %c", &temp.current_residence);
             temp.current_residence = tolower(temp.current_residence);
@@ -166,7 +176,7 @@ void castVote()
 
             struct candidate iterater;
 
-            while (fscanf(fptr, "%d %29s %29s %f %5s", &iterater.election_ID, iterater.CandidateName, iterater.Party_name, &iterater.votes_accumulated, iterater.seat_no) == 5)
+            while (fscanf(fptr, "%d,%29s,%29s,%f,%5s\n", &iterater.election_ID, iterater.CandidateName, iterater.Party_name, &iterater.votes_accumulated, iterater.seat_no) == 5)
             {
                 if (iterater.election_ID == temp.election_ID)
                 {
@@ -177,12 +187,18 @@ void castVote()
                     if (temp.current_residence == 'p')
                     {
                         iterater.votes_accumulated += 1;
-                        fprintf(fptr, "%d %29s %29s %f %5s", iterater.election_ID, iterater.CandidateName, iterater.Party_name, iterater.votes_accumulated, iterater.seat_no);
+                        fprintf(fptr, "%d,%29s,%29s,%f,%5s\n", iterater.election_ID, iterater.CandidateName, iterater.Party_name, iterater.votes_accumulated, iterater.seat_no);
+
+                        feedback();
+
                     }
                     else if (temp.current_residence == 'n')
                     {
                         iterater.votes_accumulated += 0.8;
-                        fprintf(fptr, "%d %29s %29s %f %5s", iterater.election_ID, iterater.CandidateName, iterater.Party_name, iterater.votes_accumulated, iterater.seat_no);
+                        fprintf(fptr, "%d,%29s,%29s,%f,%5s\n", iterater.election_ID, iterater.CandidateName, iterater.Party_name, iterater.votes_accumulated, iterater.seat_no);
+
+                        feedback();
+
                     }
                     else
                     {

@@ -35,4 +35,6 @@ void logIn();
 void castVote();
 bool Deadline(struct date deadline);
 void AdminPortal();
+void feedback();
+
 #endif

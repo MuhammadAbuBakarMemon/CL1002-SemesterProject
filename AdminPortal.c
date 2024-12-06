@@ -17,7 +17,7 @@ typedef struct candidate
     char CandidateName[30];
     char Party_name[30];
     float votes_accumulated;
-    char seat_no[50]; // Seat in the national assembly (e.g., NA-247)
+    char seat_no[6]; // Seat in the national assembly (e.g., NA-247)
 } can;
 
 // Function to trim leading and trailing spaces from a string
@@ -25,14 +25,14 @@ void trim(char *str)
 {
     char *end;
 
-    // Trim leading spaces
     while (isspace((unsigned char)*str))
         str++;
 
-    if (*str == 0) // If the string is empty
+    // yeh check karta hai ke string hi agar khali hai to return kardo
+    if (*str == 0)
         return;
 
-    // Trim trailing spaces
+    // trailing spaces hata dega yeh
     end = str + strlen(str) - 1;
     while (end > str && isspace((unsigned char)*end))
         end--;
@@ -40,7 +40,6 @@ void trim(char *str)
     *(end + 1) = 0;
 }
 
-// Function for the admin portal
 void AdminPortal()
 {
     FILE *fptr;
@@ -84,18 +83,18 @@ void AdminPortal()
     char u_name[30];
     int p_code = 0;
     getchar();
-    // User input for authentication
+
     printf("Please enter your username: ");
     fgets(u_name, sizeof(u_name), stdin);
-    u_name[strcspn(u_name, "\n")] = '\0'; // Remove trailing newline
-    trim(u_name);                         // Trim spaces from user input
+    u_name[strcspn(u_name, "\n")] = '\0';
+    trim(u_name);
 
     printf("Please enter your password: ");
     if (scanf("%d", &p_code) != 1)
     {
         printf("Invalid input. Please enter a valid number for the password.\n");
         while (getchar() != '\n')
-            ; // Clear the input buffer
+            ;
         return;
     }
 
@@ -142,7 +141,8 @@ void AdminPortal()
             return;
         }
 
-        printf("Please enter the number of expected candidates to register. Don't worry if the estimation is off; we can reallocate the memory in our database.\n");
+        printf("Please enter the number of expected candidates to register. Don't worry if the estimation is off;\n we can reallocate the memory in our database.\n");
+
         printf("Candidates: ");
         if (scanf("%d", &expected_Candidates) != 1)
         {
@@ -162,7 +162,7 @@ void AdminPortal()
         }
 
         // Read candidates from the file
-        while (fscanf(fptr, "%d,%29[^,],%29[^,],%f,%49[^\n]", &ptr[total_candidates_count].election_ID,
+        while (fscanf(fptr, "%d,%29[^,],%29[^,],%f,%5[^\n]", &ptr[total_candidates_count].election_ID,
                       ptr[total_candidates_count].CandidateName, ptr[total_candidates_count].Party_name,
                       &ptr[total_candidates_count].votes_accumulated, ptr[total_candidates_count].seat_no) == 5)
         {
@@ -319,7 +319,29 @@ void AdminPortal()
 
         case 3:
         {
-            printf("Feature not implemented yet.\n");
+            // printf("Feature not implemented yet.\n");
+
+            can result;
+            FILE *fptr;
+
+            fptr = fopen("CandidateDetails.csv", "r");
+            if (fptr == NULL)
+            {
+                printf("No records found.\n");
+                printf("Exiting the Admin portal.\n");
+
+                return;
+            }
+
+            while (fscanf(fptr, "%d,%29s,%29s,%f,%5s\n",
+                          &result.election_ID, result.CandidateName, result.Party_name, &result.votes_accumulated, result.seat_no) != EOF)
+            {
+                printf("Name: %s, Election ID: %d, Party Name: %s, Seat No: %s, Votes Accumulated: %.2f\n",
+                       result.CandidateName, result.election_ID, result.Party_name, result.seat_no, result.votes_accumulated);
+            }
+
+            fclose(fptr);
+
             break;
         }
 

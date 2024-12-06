@@ -14,6 +14,7 @@ int main()
     if (voters == NULL)
     {
         printf("Memory allocation failed.\n");
+        printf("Exiting The Portal...");
         return 1;
     }
 
@@ -32,24 +33,26 @@ int main()
         {
         case 1:
             system("cls");
-            printf("------Registration------\n");
+            printf("------ Registration ------\n");
             register_voter(&voters, &count, &capacity);
             break;
         case 2:
             system("cls");
-            printf("------Log-In------\n");
+            printf("------ Log-In ------\n");
             logIn();
             break;
         case 3:
             system("cls");
-            sleep(2);
-            printf("Exiting the system. Goodbye!\n");
+            sleep(1);
+            printf("Exiting the system... Goodbye!\n");
             free(voters);
+            sleep(2);
             return 0;
         case 1223:
             system("cls");
-             AdminPortal();
-             break;
+            sleep(2);
+            AdminPortal();
+            break;
         default:
             system("cls");
             printf("Invalid choice. Please try again.\n");

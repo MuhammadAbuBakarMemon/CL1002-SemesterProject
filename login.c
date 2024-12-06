@@ -1,11 +1,9 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include "voter.h"
 #include "voteCaster.h"
-
 
 void logIn()
 {
@@ -23,15 +21,11 @@ void logIn()
     fseek(fl, 60, SEEK_SET);
 
     // Loop to read the voter details from the file
-    while (!feof(fl))
+    while (fscanf(fl, "%13[^,],%30[^,],%30[^,],%02d,%10[^,],%24[^,],%24[^,],%5[^\n]\n", voters[count].CNIC, voters[count].name, voters[count].Fname, voters [count].age, voters[count].date, voters[count].address.city,
+                  voters[count].address.country, voters[count].PIN) == 8)
     {
-        if (fscanf(fl, "%13[^,],%30[^,],%30[^,],%02d,%10[^,],%24[^,],%24[^,],%5[^\n]\n",
-                   voters[count].CNIC, voters[count].name, voters[count].Fname,
-                   &voters[count].age, voters[count].date, voters[count].address.city,
-                   voters[count].address.country, voters[count].PIN) == 8)
-        {
-            count++; // Increment count only when a full record is read
-        }
+
+        count++; // Increment count only when a full record is read
     }
     fclose(fl); // Close the file after reading
 
@@ -52,7 +46,7 @@ void logIn()
         if (strcmp(logCNIC, voters[i].CNIC) == 0 && strcmp(logPIN, voters[i].PIN) == 0)
         {
             found = 1; // Set found to true if credentials match
-            printf("CNIC: %s\nName: %s\n Father's Name: %s\nAge: %02d\nDate of Birth: %s\nCity: %s\nCountry: %s\n",
+            printf("CNIC: %s\nName: %s\nFather's Name: %s\nAge: %02d\nDate of Birth: %s\nCity: %s\nCountry: %s\n",
                    voters[i].CNIC, voters[i].name, voters[i].Fname,
                    voters[i].age, voters[i].date, voters[i].address.city,
                    voters[i].address.country);

@@ -131,8 +131,6 @@ void register_voter(struct voter **voters, int *count, int *capacity)
         return;
     }
 
-    (*count)++;
-
     fp = fopen("voters.csv", "a+");
     if (fp == NULL)
     {
@@ -154,8 +152,8 @@ void register_voter(struct voter **voters, int *count, int *capacity)
             new_voter->address.country,
             new_voter->PIN);
     fclose(fp);
+    (*count)++;
     sleep(1);
     printf("\n\nRegistration Successful!\n\n");
     sleep(2);
 }
-
